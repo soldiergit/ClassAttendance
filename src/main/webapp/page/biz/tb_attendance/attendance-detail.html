@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>课堂考勤管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="/ClassAttendance/layui/css/layui.css" media="all"/>
+    <link rel="stylesheet" href="/ClassAttendance/css/public.css" media="all"/>
+</head>
+<body class="childrenBody">
+<form class="layui-form" style="width:80%;">
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">被考勤学生</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input studentName">
+        </div>
+    </div>
+    <div>
+        <label class="layui-form-label">考勤课程</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input courseName">
+        </div>
+    </div>
+    <div>
+        <label class="layui-form-label">考勤情况</label>
+        <div class="layui-input-block">
+            <select id="attendanceType" disabled>
+                <option value="1">出勤</option>
+                <option value="2">请假</option>
+                <option value="3">迟到</option>
+                <option value="4">旷课</option>
+            </select>
+        </div>
+    </div>
+    <div>
+        <label class="layui-form-label">考勤时间</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input attendanceTime">
+        </div>
+    </div>
+</form>
+<script src="/ClassAttendance/layui/layui.js"></script>
+</body>
+</html>

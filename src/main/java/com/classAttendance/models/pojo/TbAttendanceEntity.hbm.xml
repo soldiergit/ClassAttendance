@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.classAttendance.models.pojo.TbAttendanceEntity" table="tb_attendance" schema="class_attendance">
+        <id name="id" column="id"/>
+        <property name="courseId" column="course_id"/>
+        <property name="courseName" column="course_name"/>
+        <property name="studentId" column="student_id"/>
+        <property name="studentName" column="student_name"/>
+        <property name="attendanceTime" column="attendance_time"/>
+        <property name="attendanceType" column="attendance_type"/>
+        <property name="teacherCode" column="teacher_code"/>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.classAttendance.models.pojo.SysMenuEntity" table="sys_menu" schema="class_attendance">
+        <id name="menuId">
+            <column name="menu_id" sql-type="int(11)"/>
+        </id>
+        <property name="href">
+            <column name="href" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="icon">
+            <column name="icon" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="spread">
+            <column name="spread" sql-type="tinyint(4)" not-null="true"/>
+        </property>
+        <property name="title">
+            <column name="title" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="userType">
+            <column name="user_type" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <!--inverse="true" :: 将控制权交给多的多的一方-->
+        <set name="children" inverse="true">
+            <key/>
+            <one-to-many not-found="ignore" class="com.classAttendance.models.pojo.SysMenuChildrenEntity"/>
+        </set>
+    </class>
+</hibernate-mapping>

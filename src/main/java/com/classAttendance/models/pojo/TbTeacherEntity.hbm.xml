@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.classAttendance.models.pojo.TbTeacherEntity" table="tb_teacher" schema="class_attendance">
+        <id name="id" column="id"/>
+        <property name="teacherCode" column="teacher_code"/>
+        <property name="teacherName" column="teacher_name"/>
+        <property name="teacherSex" column="teacher_sex"/>
+    </class>
+</hibernate-mapping>

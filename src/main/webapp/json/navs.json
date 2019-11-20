@@ -1,0 +1,213 @@
+{
+	"contentManagement": [
+		{
+			"title": "人流量预警",
+			"icon": "&#xe630;",
+			"href": "",
+			"spread": false,
+			"children": [
+				{
+					"title": "人流量预警信息",
+					"icon": "&#xe61c;",
+					"href": "/ClassAttendance/page/system/warnMsg/warnMsgList.html",
+					"spread": false
+				}
+			]
+		},
+		{
+			"title": "预警消息推送",
+			"icon": "&#xe630;",
+			"href": "",
+			"spread": false,
+			"children": [
+				{
+					"title": "已推送预警信息",
+					"icon": "&#xe61c;",
+					"href": "/ClassAttendance/page/system/pushwarnmsg/pushWarnMsgList.html",
+					"spread": false
+				},
+				{
+					"title": "未推送预警信息",
+					"icon": "&#xe61c;",
+					"href": "/ClassAttendance/page/system/pushwarnmsg/noPushWarnMsgList.html",
+					"spread": false
+				}
+			]
+		},
+		{
+			"title": "区域管理",
+			"icon": "&#xe630;",
+			"href": "",
+			"spread": false,
+			"children": [
+				{
+					"title": "区域列表",
+					"icon": "&#xe61c;",
+					"href": "/ClassAttendance/page/system/area/areaList.html",
+					"spread": false
+				}
+			]
+		},
+		{
+			"title": "摄像头管理",
+			"icon": "&#xe630;",
+			"href": "",
+			"spread": false,
+			"children": [
+				{
+					"title": "接入设备列表",
+					"icon": "&#xe61c;",
+					"href": "/ClassAttendance/page/system/video/videoList.html",
+					"spread": false
+				}
+			]
+		},
+		{
+			"title": "保安人员管理",
+			"icon": "&#xe612;",
+			"href": "",
+			"spread": false,
+			"children": [
+				{
+					"title": "保安人员列表",
+					"icon": "&#xe612;",
+					"href": "/ClassAttendance/page/system/secStaff/secStaffList.html",
+					"spread": false
+				}
+			]
+		},
+		{
+			"title": "数据可视化",
+			"icon": "&#xe630;",
+			"href": "",
+			"spread": false,
+			"children": [
+				{
+					"title": "数据列表",
+					"icon": "&#xe61c;",
+					"href": "/ClassAttendance/page/system/dataView/dataView.html",
+					"spread": false
+				}
+			]
+		},
+		{
+			"title": "地图数据",
+			"icon": "&#xe630;",
+			"href": "",
+			"spread": false,
+			"children": [
+				{
+					"title": "地图信息",
+					"icon": "&#xe61c;",
+					"href": "/ClassAttendance/page/system/map/mapView.html",
+					"spread": false
+				}
+			]
+		},
+		{
+			"title": "坐标拾取器",
+			"icon": "&#xe630;",
+			"href": "",
+			"spread": false,
+			"children": [
+				{
+					"title": "拾取位置坐标",
+					"icon": "&#xe61c;",
+					"href": "http://api.map.baidu.com/lbsapi/getpoint/index.html",
+					"spread": false
+				}
+			]
+		}
+
+	],
+	"memberCenter": [
+		{
+			"title": "用户中心",
+			"icon": "&#xe612;",
+			"href": "/ClassAttendance/page/user/userList.html",
+			"spread": false
+		},
+		{
+			"title": "会员等级",
+			"icon": "icon-vip",
+			"href": "/ClassAttendance/page/user/userGrade.html",
+			"spread": false
+		}
+	],
+	"systemeSttings": [
+		{
+			"title": "系统基本参数",
+			"icon": "&#xe631;",
+			"href": "/ClassAttendance/page/systemSetting/basicParameter.html",
+			"spread": false
+		},{
+			"title": "系统日志",
+			"icon": "icon-log",
+			"href": "/ClassAttendance/page/systemSetting/logs.html",
+			"spread": false
+		},{
+			"title": "友情链接",
+			"icon": "&#xe64c;",
+			"href": "/ClassAttendance/page/systemSetting/linkList.html",
+			"spread": false
+		},{
+			"title": "图标管理",
+			"icon": "&#xe857;",
+			"href": "/ClassAttendance/page/systemSetting/icons.html",
+			"spread": false
+		},
+		{
+			"title": "文章列表",
+			"icon": "icon-text",
+			"href": "/ClassAttendance/page/news/newsList.html",
+			"spread": false
+		},
+		{
+			"title": "图片管理",
+			"icon": "&#xe634;",
+			"href": "/ClassAttendance/page/img/images.html",
+			"spread": false
+		},
+		{
+			"title": "其他页面",
+			"icon": "&#xe630;",
+			"href": "",
+			"spread": false,
+			"children": [
+				{
+					"title": "404页面",
+					"icon": "&#xe61c;",
+					"href": "/ClassAttendance/page/404.html",
+					"spread": false
+				},
+				{
+					"title": "登录",
+					"icon": "&#xe609;",
+					"href": "/ClassAttendance/page/login/login.html",
+					"spread": false,
+					"target": "_blank"
+				}
+			]
+		}
+	],
+	"seraphApi": [
+		{
+			"title": "三级联动模块",
+			"icon": "icon-mokuai",
+			"href": "/ClassAttendance/page/doc/addressDoc.html",
+			"spread": false
+		},{
+			"title": "bodyTab模块",
+			"icon": "icon-mokuai",
+			"href": "/ClassAttendance/page/doc/bodyTabDoc.html",
+			"spread": false
+		},{
+			"title": "三级菜单",
+			"icon": "icon-mokuai",
+			"href": "/ClassAttendance/page/doc/navDoc.html",
+			"spread": false
+		}
+	]
+}
+
+

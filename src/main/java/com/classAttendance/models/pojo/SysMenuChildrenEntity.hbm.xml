@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.classAttendance.models.pojo.SysMenuChildrenEntity" table="sys_menu_children" schema="class_attendance">
+        <id name="id">
+            <column name="id" sql-type="int(11)"/>
+        </id>
+        <property name="href">
+            <column name="href" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="icon">
+            <column name="icon" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <property name="spread">
+            <column name="spread" sql-type="tinyint(4)" not-null="true"/>
+        </property>
+        <property name="title">
+            <column name="title" sql-type="varchar(255)" not-null="true"/>
+        </property>
+        <many-to-one name="menu" class="com.classAttendance.models.pojo.SysMenuEntity"/>
+        <!--false:取消懒加载策略，即在加载对象的同时，发出查询语句，加载其关联对象
+
+            proxy:这是hibernate对单端关联的默认懒加载策略，即只有在调用到其关联对象的方法的时候才真正发出查询语句查询其对象数据，其关联对象是代理类
+            （默认）
+
+            no-proxy:这种懒加载特性需要对类进行增强，使用no-proxy，其关联对象不是代理类-->
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<constant name="struts.custom.i18n.resources" value="messageResource" />
+	<!-- 设置上传限制为100M -->
+	<constant name="struts.multipart.maxSize" value="109715200" />
+	<!-- 编码设置 -->
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+
+	<!-- 定义业务模块设置模块 -->
+	<package name="biz" extends="json-default" namespace="/biz" strict-method-invocation="false">
+        <!--考勤-->
+        <action name="attendance_*" class="com.classAttendance.models.biz.tb_attendance.action.AttendanceAction" method="{1}">
+            <result name="success" type="json">
+                <param name="root">r</param>
+            </result>
+        </action>
+        <!--班级-->
+        <action name="class_*" class="com.classAttendance.models.biz.tb_class.action.ClassAction" method="{1}">
+            <result name="success" type="json">
+                <param name="root">r</param>
+            </result>
+        </action>
+        <!--学院-->
+        <action name="college_*" class="com.classAttendance.models.biz.tb_college.action.CollegeAction" method="{1}">
+            <result name="success" type="json">
+                <param name="root">r</param>
+            </result>
+        </action>
+        <!--课程-->
+        <action name="course_*" class="com.classAttendance.models.biz.tb_course.action.CourseAction" method="{1}">
+            <result name="success" type="json">
+                <param name="root">r</param>
+            </result>
+        </action>
+        <!--选课-->
+        <action name="courseChoose_*" class="com.classAttendance.models.biz.tb_course_choose.action.CourseChooseAction" method="{1}">
+            <result name="success" type="json">
+                <param name="root">r</param>
+            </result>
+        </action>
+        <!--学生-->
+        <action name="student_*" class="com.classAttendance.models.biz.tb_student.action.StudentAction" method="{1}">
+            <result name="success" type="json">
+                <param name="root">r</param>
+            </result>
+        </action>
+        <!--教师-->
+        <action name="teacher_*" class="com.classAttendance.models.biz.tb_teacher.action.TeacherAction" method="{1}">
+            <result name="success" type="json">
+                <param name="root">r</param>
+            </result>
+        </action>
+	</package>
+
+	<!-- 定义业务模块设置模块 -->
+	<package name="download" extends="struts-default" namespace="/download" strict-method-invocation="false">
+		<!--文件下载-->
+		<action name="download_*" class="com.classAttendance.models.biz.download.DownLoadAction" method="{1}">
+			<result name="success" type="stream"><!-- result类型是流(stream)类型 -->
+				<param name="inputName">inputStream</param><!-- inputName指向被下载文件的来源,对应Action中返回的InputStream -->
+				<param name="contentType">${contentType}</param><!-- 下载的内容类型，如图片类型、文档类型等…… -->
+				<param name="contentDisposition">
+					<!-- 指定文件下载的处理方式，内联(inline)和附件(attachment)两种方式，attachment会弹出文件保存对话框 -->
+					attachment;filename=${filename}
+				</param>
+			</result>
+		</action>
+	</package>
+</struts>    

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- 定义系统设置模块 -->
+	<package name="system" extends="json-default" namespace="/" strict-method-invocation="false">
+		<!-- 登陆 -->
+		<action name="login_*" class="com.classAttendance.models.sys.login.action.LoginAction" method="{1}">
+			<result name="success" type="json">
+				<param name="root">r</param>
+			</result>
+		</action>
+		<!--系统用户-->
+		<action name="user_*" class="com.classAttendance.models.sys.sys_user.action.UserAction" method="{1}">
+			<result name="success" type="json">
+				<param name="root">r</param>
+			</result>
+		</action>
+		<!--菜单-->
+		<action name="menu_*" class="com.classAttendance.models.sys.sys_menu.action.MenuAction" method="{1}">
+			<result name="success" type="json">
+				<param name="root">r</param>
+			</result>
+		</action>
+		<!--二级菜单-->
+		<action name="menuChildren_*" class="com.classAttendance.models.sys.sys_menu_children.action.MenuChildrenAction" method="{1}">
+			<result name="success" type="json">
+				<param name="root">r</param>
+			</result>
+		</action>
+	</package>
+</struts>

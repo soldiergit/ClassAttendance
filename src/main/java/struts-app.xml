@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+    <package name="appf" extends="json-default" namespace="/appf">
+        <!-- 用户登录 -->
+        <!--<action name="appLogin_*" class="com.classAttendance.models.app.action.appUser.AppUserAction" method="{1}">-->
+			<!--<result name="success" type="json" >-->
+				<!--<param name="root">result</param>-->
+			<!--</result>-->
+	    <!--</action>-->
+	</package>
+    <!-- JSON定义配置 -->
+    <package name="scestaff" extends="json-default" namespace="/scestaff" strict-method-invocation="false">
+        <!-- JSON定义 -->
+        <!--<action name="admin_*" class="com.classAttendance.models.sys.action.admin.AdminAction" method="{1}">-->
+            <!--<result name="success" type="json">-->
+                <!--<param name="root">result</param>-->
+            <!--</result>-->
+        <!--</action>-->
+    </package>
+</struts>    

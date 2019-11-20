@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.classAttendance.models.pojo.SysUserEntity" table="sys_user" schema="class_attendance">
+        <id name="id" column="id"/>
+        <property name="loginNumber" column="login_number"/>
+        <property name="loginPassword" column="login_password"/>
+        <property name="userType" column="user_type"/>
+        <property name="userName" column="user_name"/>
+        <property name="userStatus" column="user_status"/>
+    </class>
+</hibernate-mapping>

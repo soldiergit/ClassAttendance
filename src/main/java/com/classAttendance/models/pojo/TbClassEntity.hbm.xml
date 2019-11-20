@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.classAttendance.models.pojo.TbClassEntity" table="tb_class" schema="class_attendance">
+        <id name="id" column="id"/>
+        <property name="className" column="class_name"/>
+        <property name="classGrade" column="class_grade"/>
+        <property name="classMajor" column="class_major"/>
+    </class>
+</hibernate-mapping>

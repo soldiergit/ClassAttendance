@@ -1,0 +1,14 @@
+{
+	"cmsName": "人流量监管系统",
+	"version": "v1.0",
+	"author": "麦奇",
+	"homePage": "index.html",
+	"server": "Linux",
+	"dataBase": "Mysql5.7",
+	"maxUpload": "2M",
+	"userRights": "超级管理员",
+	"description": "人流量监管系统",
+	"powerby": "copyright @ 2019 麦奇",
+	"record": "京ICP备14040xxx号-1",
+	"keywords": "人流量监管系统"
+}
