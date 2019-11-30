@@ -14,9 +14,10 @@ layui.config({
     //信息列表
     var tableLoad = layer.load(1);
     var dataLen = 0;//判断是否有记录，用于导出时校验
+    var studentCode = window.sessionStorage.getItem("userCode");
     var tableIns = table.render({
         elem: '#infoList',//数据表格id
-        url: '/ClassAttendance/biz/attendance_findByPage.action',//数据接口
+        url: '/ClassAttendance/biz/attendance_findByStu.action?studentCode='+studentCode,//数据接口
         page: true,//开启分页
         height: "full-125",//容器高度
         limits: [10, 15, 20, 25],
@@ -33,8 +34,7 @@ layui.config({
                     if (d.attendanceType === 3) return '迟到';
                     if (d.attendanceType === 4) return '旷课';
                 }},
-            {field: 'attendanceTime', title: '考勤时间', minWidth: 100, align: 'center'},
-            {title: '操作', minWidth: 175, templet: '#infoListBar', fixed: "right", align: "center"}
+            {field: 'attendanceTime', title: '考勤时间', minWidth: 100, align: 'center'}
         ]],done:function (res) {
             layer.close(tableLoad);    //返回数据关闭loading
         }
@@ -55,6 +55,10 @@ layui.config({
     $('.reloadBtn').on('click', function(){
         var type = $(this).data('type');
         active[type] ? active[type].call(this) : '';
+    });
+
+    $(".addBtn").click(function () {
+        addUser();
     });
 
     //批量删除
@@ -110,36 +114,6 @@ layui.config({
         }
     });
 
-    //添加
-    function addUser(edit) {
-        var index = layui.layer.open({
-            title: "修改",
-            type: 2,
-            content: "attendance-add.html",
-            maxmin: true,
-            success: function (layero, index) {
-                var body = layui.layer.getChildFrame('body', index);
-                if (edit) {
-                    body.find(".Id").val(edit.id);
-                    body.find("#courseHide").val(edit.courseId);            //隐藏
-                    body.find(".courseName").val(edit.courseName).prop("disabled", true);
-                    body.find("#studentCodeHide").val(edit.studentCode);    //隐藏
-                    body.find(".studentName").val(edit.studentName).prop("disabled", true);
-                    body.find(".attendanceTime").val(edit.attendanceTime).prop("disabled", true);
-                    body.find("#teacherCodeHide").val(edit.teacherCode);    //隐藏
-                    body.find("#attendanceType").val(edit.attendanceType);
-                    form.render();
-                }
-            }
-        });
-        layui.layer.full(index);  //全屏
-        window.sessionStorage.setItem("index", index);  //存放当前列表行数据
-        //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
-        $(window).on("resize", function () {
-            layui.layer.full(window.sessionStorage.getItem("index"));
-        })
-    }
-
     //用户详情
     function detailUser(data) {
         var index = layui.layer.open({
@@ -148,12 +122,9 @@ layui.config({
             content: "attendance-detail.html",
             success: function (layero, index) {
                 var body = layui.layer.getChildFrame('body', index);
-                body.find(".studentName").val(data.studentName);
-                body.find(".courseName").val(data.courseName);
-                if (data.attendanceType === 1) body.find(".attendanceType").val('出勤');
-                if (data.attendanceType === 2) body.find(".attendanceType").val('请假');
-                if (data.attendanceType === 3) body.find(".attendanceType").val('迟到');
-                if (data.attendanceType === 4) body.find(".attendanceType").val('旷课');
+                body.find(".studentName").val(data.tbStudentEntity.studentName);
+                body.find(".courseName").val(data.tbCollegeEntity.courseName);
+                body.find("#attendanceType").val(data.attendanceType);
                 body.find(".attendanceTime").val(data.attendanceTime);
                 form.render();
             }
@@ -211,7 +182,7 @@ layui.config({
 
                         excel.exportExcel({
                             sheet1: data
-                        }, '学生考勤记录.xlsx', 'xlsx');
+                        }, '我的考勤记录.xlsx', 'xlsx');
                     }else {
                         layer.msg("导出失败");
                     }
@@ -229,7 +200,7 @@ layui.config({
         } else {
             $.ajax({
                 url: '/ClassAttendance/biz/attendance_findByExport.action',
-                data: {exportCode: 1},
+                data: {studentCode: studentCode, exportCode: 3},
                 dataType: 'json',
                 success: function (res) {
                     if (res.code === 0) {
@@ -269,7 +240,7 @@ layui.config({
 
                         excel.exportExcel({
                             sheet1: data
-                        }, '学生考勤记录.xlsx', 'xlsx');
+                        }, '我的考勤记录.xlsx', 'xlsx');
                     } else {
                         layer.msg("导出失败");
                     }

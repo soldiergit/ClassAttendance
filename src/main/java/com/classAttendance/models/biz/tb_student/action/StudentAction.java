@@ -38,10 +38,14 @@ public class StudentAction extends ActionSupport implements ModelDriven<TbStuden
     private Integer limit;
     //批量删除id
     private String ids;
+    // 是否执行查询：1-才查询
+    private Integer queryCode;
     // 所属班级
     private Long classId;
     //  课程id-默认########
     private String courseId = "########";
+    //  考勤类型
+    private Integer attendanceType;
 
     @Override
     public TbStudentEntity getModel() {
@@ -129,7 +133,7 @@ public class StudentAction extends ActionSupport implements ModelDriven<TbStuden
      */
     public String findAll() {
 
-        List<TbStudentEntity> all = studentService.findAll(null);
+        List<TbStudentEntity> all = studentService.findAll(null, null, null);
 
         logger.info("查询列表");
 
@@ -158,7 +162,9 @@ public class StudentAction extends ActionSupport implements ModelDriven<TbStuden
      */
     public String findByCourse(){
 
-        List<TbStudentEntity> all = studentService.findAll(courseId);
+        if (queryCode == null) return SUCCESS;
+
+        List<TbStudentEntity> all = studentService.findAll(key, courseId, attendanceType);
 
         r = R.ok().put("data", all);
 
@@ -219,6 +225,13 @@ public class StudentAction extends ActionSupport implements ModelDriven<TbStuden
         this.ids = ids;
     }
 
+    public Integer getQueryCode() {
+        return queryCode;
+    }
+    public void setQueryCode(Integer queryCode) {
+        this.queryCode = queryCode;
+    }
+
     public Long getClassId() {
         return classId;
     }
@@ -231,5 +244,12 @@ public class StudentAction extends ActionSupport implements ModelDriven<TbStuden
     }
     public void setCourseId(String courseId) {
         this.courseId = courseId;
+    }
+
+    public Integer getAttendanceType() {
+        return attendanceType;
+    }
+    public void setAttendanceType(Integer attendanceType) {
+        this.attendanceType = attendanceType;
     }
 }

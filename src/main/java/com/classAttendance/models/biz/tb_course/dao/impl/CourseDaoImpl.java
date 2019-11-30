@@ -2,13 +2,13 @@ package com.classAttendance.models.biz.tb_course.dao.impl;
 
 import com.classAttendance.common.vo.PageBean;
 import com.classAttendance.models.biz.tb_course.dao.CourseDao;
+import com.classAttendance.models.biz.tb_student.dao.StudentDao;
 import com.classAttendance.models.pojo.TbCourseEntity;
+import com.classAttendance.models.pojo.TbStudentEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -30,6 +30,8 @@ public class CourseDaoImpl implements CourseDao {
     private HibernateTemplate hibernateTemplate;
     @Autowired
     private SessionFactory sessionFactory;
+    @Autowired
+    private StudentDao studentDao;
 
     @Override
     public void save(TbCourseEntity tbCourseEntity) {
@@ -86,6 +88,50 @@ public class CourseDaoImpl implements CourseDao {
                     .add(Restrictions.eq("tbTeacherEntity.teacherCode", teacherCode));
         }
 
+        // 获取记录数
+        pageBean.setTotal(Math.toIntExact((Long) criteria.setProjection(Projections.rowCount()).uniqueResult()));
+
+        // 获取结果--将 Projection 设为空，再进行正常分页
+        criteria.setProjection(null);
+        pageBean.setRows(criteria.setFirstResult((pageBean.getCurrPage() - 1) * pageBean.getPageSize())
+                .setMaxResults(pageBean.getPageSize()).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list());
+
+        session.close();
+
+        return pageBean;
+    }
+
+    @Override
+    public PageBean findByChoose(String key, String studentCode, boolean haveChosen, PageBean<TbCourseEntity> pageBean) {
+
+        Session session = sessionFactory.openSession();
+
+        /**
+         * hibernate 利用子查询实现 exists 功能
+         */
+        Criteria criteria = session.createCriteria(TbCourseEntity.class, "course");
+        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(TbStudentEntity.class, "student");
+        detachedCriteria.add(Restrictions.eq("studentCode", studentCode));  //绑定学生
+        TbStudentEntity studentEntity = new TbStudentEntity();
+        studentEntity.setStudentCode(studentCode);
+        studentEntity = studentDao.findByCode(studentEntity);
+        detachedCriteria.add(Property.forName("studentCode.queryCode").like(studentEntity.getCourseSet(), MatchMode.ANYWHERE));
+        if (haveChosen) {   //查询已选择课程
+            criteria.add(Subqueries.exists(detachedCriteria.setProjection(Projections.property("student.id"))));
+        } else {            //查询未选择课程
+            criteria.add(Subqueries.notExists(detachedCriteria.setProjection(Projections.property("student.id"))));
+        }
+
+        if (key != null && key.length() != 0) {
+            //搜索
+            criteria.add(
+                    Restrictions.or(
+                            Restrictions.or(Restrictions.like("courseName", key, MatchMode.ANYWHERE)),
+                            Restrictions.or(Restrictions.like("courseYear", key, MatchMode.ANYWHERE)),
+                            Restrictions.or(Restrictions.like("courseTerm", key, MatchMode.ANYWHERE))
+                    )
+            );
+        }
         // 获取记录数
         pageBean.setTotal(Math.toIntExact((Long) criteria.setProjection(Projections.rowCount()).uniqueResult()));
 

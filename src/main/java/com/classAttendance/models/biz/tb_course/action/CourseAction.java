@@ -41,6 +41,8 @@ public class CourseAction extends ActionSupport implements ModelDriven<TbCourseE
     // 开课老师
     private Long teacherId;
     private String teacherCode;
+    //  选课学生
+    private String studentCode;
 
     @Override
     public TbCourseEntity getModel() {
@@ -179,6 +181,36 @@ public class CourseAction extends ActionSupport implements ModelDriven<TbCourseE
 
     }
 
+    /**
+     * 查询已选课--学生
+     */
+    public String findByHaveChosen() {
+
+        PageBean byHaveChosen = courseService.findByHaveChosen(key, studentCode, new PageBean<TbCourseEntity>().setCurrPage(page).setPageSize(limit));
+
+        r = R.ok().put("data", byHaveChosen.getRows()).put("count", byHaveChosen.getTotal());
+
+        logger.info("查询" + r);
+
+        return SUCCESS;
+
+    }
+
+    /**
+     * 查询未选课--学生
+     */
+    public String findByNoChoice() {
+
+        PageBean byNoChoice = courseService.findByNoChoice(key, studentCode, new PageBean<TbCourseEntity>().setCurrPage(page).setPageSize(limit));
+
+        r = R.ok().put("data", byNoChoice.getRows()).put("count", byNoChoice.getTotal());
+
+        logger.info("查询" + r);
+
+        return SUCCESS;
+
+    }
+
     /////////////////////////////////////////
 
     public TbCourseEntity getTbCourseEntity() {
@@ -242,5 +274,12 @@ public class CourseAction extends ActionSupport implements ModelDriven<TbCourseE
     }
     public void setTeacherCode(String teacherCode) {
         this.teacherCode = teacherCode;
+    }
+
+    public String getStudentCode() {
+        return studentCode;
+    }
+    public void setStudentCode(String studentCode) {
+        this.studentCode = studentCode;
     }
 }

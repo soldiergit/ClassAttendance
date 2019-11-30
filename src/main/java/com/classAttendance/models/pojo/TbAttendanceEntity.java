@@ -15,9 +15,9 @@ import java.util.Objects;
 public class TbAttendanceEntity {
     private long id;
     private Long courseId;
-    private String courseName;    //考勤课程
-    private Long studentId;
-    private String studentName;  //被考勤学生
+    private String courseName;      //考勤课程
+    private String studentCode;     //学号
+    private String studentName;     //被考勤学生
     private String attendanceTime;  //考勤时间
     private Integer attendanceType; //考勤情况：1-出勤，2-请假，3-迟到，4-旷课
     private String teacherCode;     //考勤老师工号
@@ -49,12 +49,12 @@ public class TbAttendanceEntity {
     }
 
     @Basic
-    @Column(name = "student_id")
-    public Long getStudentId() {
-        return studentId;
+    @Column(name = "student_code")
+    public String getStudentCode() {
+        return studentCode;
     }
-    public void setStudentId(Long studentId) {
-        this.studentId = studentId;
+    public void setStudentCode(String studentCode) {
+        this.studentCode = studentCode;
     }
     @Basic
     @Column(name = "student_name")
@@ -100,7 +100,7 @@ public class TbAttendanceEntity {
         return id == that.id &&
                 Objects.equals(courseId, that.courseId) &&
                 Objects.equals(courseName, that.courseName) &&
-                Objects.equals(studentId, that.studentId) &&
+                Objects.equals(studentCode, that.studentCode) &&
                 Objects.equals(studentName, that.studentName) &&
                 Objects.equals(attendanceTime, that.attendanceTime) &&
                 Objects.equals(attendanceType, that.attendanceType) &&
@@ -109,6 +109,6 @@ public class TbAttendanceEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, courseId, courseName, studentId, studentName, attendanceTime, attendanceType, teacherCode);
+        return Objects.hash(id, courseId, courseName, studentCode, studentName, attendanceTime, attendanceType, teacherCode);
     }
 }

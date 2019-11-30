@@ -30,7 +30,7 @@ CREATE TABLE `sys_menu` (
   `spread` tinyint(4) DEFAULT NULL,
   `user_type` int(11) DEFAULT NULL,
   PRIMARY KEY (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `sys_menu` (
 
 LOCK TABLES `sys_menu` WRITE;
 /*!40000 ALTER TABLE `sys_menu` DISABLE KEYS */;
-INSERT INTO `sys_menu` VALUES (1,'基础数据管理','&#xe716;','',0,1),(2,'考勤信息管理','&#xe613;','',0,1),(3,'考勤信息管理','&#xe705;','',0,2),(4,'教师档案管理','&#xe613;','',0,1);
+INSERT INTO `sys_menu` VALUES (1,'基础数据管理','&#xe716;','',0,1),(2,'考勤信息管理','&#xe613;','',0,1),(3,'考勤信息管理','&#xe613;','',0,2),(4,'考勤信息管理','&#xe613;','',0,3),(5,'选课管理','&#xe716;','',0,NULL);
 /*!40000 ALTER TABLE `sys_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -60,7 +60,7 @@ CREATE TABLE `sys_menu_children` (
   PRIMARY KEY (`id`),
   KEY `FK3x9iahy8ma4rxeg4b7p9bpalg` (`menu_menu_id`),
   CONSTRAINT `FK3x9iahy8ma4rxeg4b7p9bpalg` FOREIGN KEY (`menu_menu_id`) REFERENCES `sys_menu` (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,7 +69,7 @@ CREATE TABLE `sys_menu_children` (
 
 LOCK TABLES `sys_menu_children` WRITE;
 /*!40000 ALTER TABLE `sys_menu_children` DISABLE KEYS */;
-INSERT INTO `sys_menu_children` VALUES (1,'二级学院信息','&#xe602;','/ClassAttendance/page/biz/tb_college/college-list.html',0,1),(2,'教师信息','&#xe602;','/ClassAttendance/page/biz/tb_teacher/teacher-list.html',0,1),(3,'课程信息','&#xe602;','/ClassAttendance/page/biz/tb_course/course-list.html',0,1),(4,'班级信息','&#xe602;','/ClassAttendance/page/biz/tb_class/class-list.html',0,1),(5,'学生信息','&#xe602;','/ClassAttendance/page/biz/tb_student/student-list.html',0,1),(6,'选课信息','&#xe602;','/ClassAttendance/page/biz/tb_course_choose/courseChoose-list.html',0,1),(10,'考勤记录','&#xe602;','/ClassAttendance/page/biz/tb_attendance/attendance-list-tea.html',0,3),(11,'点名考勤','&#xe602;','/ClassAttendance/page/biz/tb_attendance/checkWork/my-course-stu-list.html',0,3);
+INSERT INTO `sys_menu_children` VALUES (1,'二级学院信息','&#xe602;','/ClassAttendance/page/biz/tb_college/college-list.html',0,1),(2,'教师信息','&#xe602;','/ClassAttendance/page/biz/tb_teacher/teacher-list.html',0,1),(3,'课程信息','&#xe602;','/ClassAttendance/page/biz/tb_course/course-list.html',0,1),(4,'班级信息','&#xe602;','/ClassAttendance/page/biz/tb_class/class-list.html',0,1),(5,'学生信息','&#xe602;','/ClassAttendance/page/biz/tb_student/student-list.html',0,1),(6,'选课信息','&#xe602;','/ClassAttendance/page/biz/tb_course_choose/courseChoose-list.html',0,NULL),(7,'考勤记录','&#xe602;','/ClassAttendance/page/biz/tb_attendance/attendance-list-admin.html',0,2),(10,'考勤记录','&#xe602;','/ClassAttendance/page/biz/tb_attendance/attendance-list-tea.html',0,3),(11,'点名考勤','&#xe602;','/ClassAttendance/page/biz/tb_attendance/checkWork/my-course-stu-list.html',0,3),(20,'考勤记录','&#xe602;','/ClassAttendance/page/biz/tb_attendance/attendance-list-stu.html',0,4),(21,'已选课程','&#xe602;','/ClassAttendance/page/biz/tb_course_choose/have-chosen.html',0,5),(22,'未选课程','&#xe602;','/ClassAttendance/page/biz/tb_course_choose/no-choice.html',0,5);
 /*!40000 ALTER TABLE `sys_menu_children` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,7 +97,7 @@ CREATE TABLE `sys_user` (
 
 LOCK TABLES `sys_user` WRITE;
 /*!40000 ALTER TABLE `sys_user` DISABLE KEYS */;
-INSERT INTO `sys_user` VALUES (1,'admin','admin',1,'系统管理员',1),(157416442866746,'17041','123456',2,'老莫',1),(157416503562142,'201700208203','123456',3,'黄结',1);
+INSERT INTO `sys_user` VALUES (1,'admin','admin',1,'系统管理员',1),(157416442866746,'teacher','123456',2,'教师1',1),(157416503562142,'student','123456',3,'学生1',1);
 /*!40000 ALTER TABLE `sys_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -110,13 +110,13 @@ DROP TABLE IF EXISTS `tb_attendance`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tb_attendance` (
   `id` bigint(20) NOT NULL,
-  `student_id` bigint(20) DEFAULT NULL COMMENT '被考勤学生',
+  `teacher_code` varchar(255) DEFAULT NULL COMMENT '被考勤学生',
   `course_id` bigint(20) DEFAULT NULL,
   `attendance_time` varchar(255) DEFAULT NULL COMMENT '考勤时间',
   `attendance_type` int(11) DEFAULT NULL COMMENT '考勤情况：1-出勤，2-请假，3-迟到，4-旷课',
-  `teacher_code` varchar(255) DEFAULT NULL,
   `course_name` varchar(255) DEFAULT NULL,
   `student_name` varchar(255) DEFAULT NULL,
+  `student_code` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='考勤表';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -127,7 +127,7 @@ CREATE TABLE `tb_attendance` (
 
 LOCK TABLES `tb_attendance` WRITE;
 /*!40000 ALTER TABLE `tb_attendance` DISABLE KEYS */;
-INSERT INTO `tb_attendance` VALUES (157425785539111,1,157416514147151,'2019-11-20 21:50:55',1,'17041','课程1','测试1'),(157425785545226,2,157416514147151,'2019-11-20 21:50:55',2,'17041','课程1','测试2'),(157425785545725,3,157416514147151,'2019-11-20 21:50:55',3,'17041','课程1','测试3'),(157425785546215,157416503562142,157416514147151,'2019-11-20 21:50:55',4,'17041','课程1','黄结');
+INSERT INTO `tb_attendance` VALUES (157476228359436,'teacher',157416514147151,'2019-11-26 17:58:03',2,'课程1','测试2','201700208205'),(157476228374108,'teacher',157416514147151,'2019-11-26 17:58:03',3,'课程1','学生1','student');
 /*!40000 ALTER TABLE `tb_attendance` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -193,6 +193,7 @@ DROP TABLE IF EXISTS `tb_course`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tb_course` (
   `id` bigint(20) NOT NULL,
+  `query_code` varchar(255) DEFAULT NULL,
   `teacher_id` bigint(20) DEFAULT NULL COMMENT '开课老师',
   `course_name` varchar(255) DEFAULT NULL COMMENT '课程名称',
   `course_year` varchar(3) DEFAULT NULL COMMENT '学年',
@@ -212,36 +213,8 @@ CREATE TABLE `tb_course` (
 
 LOCK TABLES `tb_course` WRITE;
 /*!40000 ALTER TABLE `tb_course` DISABLE KEYS */;
-INSERT INTO `tb_course` VALUES (157416514147151,157416442866746,'课程1','10','11',11,20,20),(157416514147152,157416442866746,'课程2','10','11',11,20,20),(157416514147153,157416442866746,'课程3','10','11',11,20,20),(157416514147158,157416442866746,'看片','10','11',11,20,20);
+INSERT INTO `tb_course` VALUES (157416514147151,'157416514147151',157416442866746,'课程1','10','11',11,20,20),(157416514147152,'157416514147152',157416442866746,'课程2','10','11',11,20,20),(157416514147153,'157416514147153',157416442866746,'课程3','10','11',11,20,20),(157416514147158,'157416514147158',157416442866746,'测试','10','11',11,20,20);
 /*!40000 ALTER TABLE `tb_course` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `tb_course_choose`
---
-
-DROP TABLE IF EXISTS `tb_course_choose`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tb_course_choose` (
-  `id` bigint(20) NOT NULL,
-  `course_id` bigint(20) DEFAULT NULL,
-  `student_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FKBC3356AAC07EC58B` (`course_id`),
-  KEY `FKBC3356AA2B23BB6F` (`student_id`),
-  CONSTRAINT `FKBC3356AA2B23BB6F` FOREIGN KEY (`student_id`) REFERENCES `tb_student` (`id`),
-  CONSTRAINT `FKBC3356AAC07EC58B` FOREIGN KEY (`course_id`) REFERENCES `tb_course` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='学生选课表';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tb_course_choose`
---
-
-LOCK TABLES `tb_course_choose` WRITE;
-/*!40000 ALTER TABLE `tb_course_choose` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_course_choose` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -273,7 +246,7 @@ CREATE TABLE `tb_student` (
 
 LOCK TABLES `tb_student` WRITE;
 /*!40000 ALTER TABLE `tb_student` DISABLE KEYS */;
-INSERT INTO `tb_student` VALUES (1,'201700208204',157416062420736,0,'18277404022','583403411@qq.com','测试1','157416514147152,157416514147153',NULL),(2,'201700208205',157416062420736,0,'18277404022','583403411@qq.com','测试2','157416514147151',NULL),(3,'201700208206',157416062420736,0,'18277404022','583403411@qq.com','测试3','157416514147158',NULL),(157416503562142,'201700208203',157416062420736,1,'18277404022','583403411@qq.com','黄结','157416514147151,157416514147152',NULL);
+INSERT INTO `tb_student` VALUES (1,'201700208204',157416062420736,0,'18277404022','583403411@qq.com','测试1','157416514147152,157416514147153',NULL),(2,'201700208205',157416062420736,0,'18277404022','583403411@qq.com','测试2','157416514147151',NULL),(3,'201700208206',157416062420736,0,'18277404022','583403411@qq.com','测试3','157416514147158',NULL),(157416503562142,'student',157416062420736,1,'18277404022','583403411@qq.com','学生1','157416514147151,157416514147152',NULL);
 /*!40000 ALTER TABLE `tb_student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -302,7 +275,7 @@ CREATE TABLE `tb_teacher` (
 
 LOCK TABLES `tb_teacher` WRITE;
 /*!40000 ALTER TABLE `tb_teacher` DISABLE KEYS */;
-INSERT INTO `tb_teacher` VALUES (157416442866746,'17041','老莫',1,157415521953321);
+INSERT INTO `tb_teacher` VALUES (157416442866746,'teacher','教师1',1,157415521953321);
 /*!40000 ALTER TABLE `tb_teacher` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -315,4 +288,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-11-20 21:52:59
+-- Dump completed on 2019-11-30 12:51:14

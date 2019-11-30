@@ -46,6 +46,15 @@ public interface CourseDao {
     public PageBean findByPage(String key, String teacherCode, PageBean<TbCourseEntity> pageBean);
 
     /**
+     * 分页查询-用于学生选课-=-无效
+     * @param key
+     * @param studentCode   学号
+     * @param haveChosen    判断是已选还是未选
+     * @param pageBean
+     */
+    public PageBean findByChoose(String key, String studentCode, boolean haveChosen, PageBean<TbCourseEntity> pageBean);
+
+    /**
      * 列表
      */
     public List<TbCourseEntity> findAll(String teacherCode);

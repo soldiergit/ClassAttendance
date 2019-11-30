@@ -1,12 +1,7 @@
-layui.use(['form', 'layer','util' , 'laydate'], function () {
+layui.use(['form', 'layer'], function () {
     var form = layui.form,
         layer = parent.layer === undefined ? layui.layer : top.layer,
-        $ = layui.$,
-        util = layui.util,
-        laydate = layui.laydate;
-
-    //执行一个laydate实例
-    laydate.render({elem: '.attendanceTime',trigger: 'click', type: 'date', done: function (value, date, endDate) {}});
+        $ = layui.$;
 
     form.on("submit(addUser)", function (data) {
         //弹出loading
@@ -14,15 +9,18 @@ layui.use(['form', 'layer','util' , 'laydate'], function () {
         // 实际使用时的提交信息
         $.post("/ClassAttendance/biz/attendance_update.action", {
             id: $(".Id").val(),//id
-            attendanceTime: util.toDateString($(".attendanceTime").val(), "yyyy-MM-dd"),
-            attendanceType: $("#attendanceType").val(),
+            courseId: $("#courseHide").val(),
+            courseName: $(".courseName").val(),
+            studentCode: $("#studentCodeHide").val(),
+            studentName: $(".studentName").val(),
+            attendanceTime: $(".attendanceTime").val(),
             teacherCode: $("#teacherCodeHide").val(),
-            studentId: $("#studentHide").val(),
-            courseId: $("#courseHide").val()
+
+            attendanceType: $("#attendanceType").val()
         }, function (res) {
             if (res.code === 0) {
                 top.layer.close(index);
-                top.layer.msg(updateFlag === '0' ? "添加考勤成功！" : "修改考勤成功！");
+                top.layer.msg("修改考勤成功！");
                 layer.closeAll("iframe");
                 //刷新父页面
                 parent.location.reload();

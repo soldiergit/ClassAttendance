@@ -3,7 +3,7 @@ package com.classAttendance.models.biz.tb_course_choose.action;
 import com.classAttendance.common.vo.PageBean;
 import com.classAttendance.common.vo.R;
 import com.classAttendance.models.biz.tb_course_choose.service.CourseChooseService;
-import com.classAttendance.models.pojo.TbCourseChooseEntity;
+import com.classAttendance.models.pojo.CourseChooseModel;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
@@ -16,16 +16,16 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @create:19-11-18下午4:52
  * @Describe:
  */
-public class CourseChooseAction extends ActionSupport implements ModelDriven<TbCourseChooseEntity> {
+public class CourseChooseAction extends ActionSupport implements ModelDriven<CourseChooseModel> {
 
     @Autowired
     private CourseChooseService courseChooseService;
     //日志
     private static Logger logger = Logger.getLogger(CourseChooseAction.class);
     //模型驱动
-    private TbCourseChooseEntity tbCourseChooseEntity = new TbCourseChooseEntity();
+    private CourseChooseModel courseChooseModel = new CourseChooseModel();
     //分页
-    private PageBean<TbCourseChooseEntity> pageBean = new PageBean<>();
+    private PageBean<CourseChooseModel> pageBean = new PageBean<>();
     //返回集
     private R r = new R();
     //搜索值
@@ -40,112 +40,25 @@ public class CourseChooseAction extends ActionSupport implements ModelDriven<TbC
     /////////////////////////////////////////
 
     @Override
-    public TbCourseChooseEntity getModel() {
-        return tbCourseChooseEntity;
-    }
-
-    /**
-     * 添加
-     */
-    public String save() {
-
-        logger.info("添加:" + tbCourseChooseEntity);
-
-        courseChooseService.save(tbCourseChooseEntity);
-
-        r = R.ok();
-
-        return SUCCESS;
-    }
-
-    /**
-     * 删除
-     */
-    public String delete() {
-
-        logger.info("删除：" + tbCourseChooseEntity);
-
-        courseChooseService.delete(tbCourseChooseEntity);
-
-        r = R.ok();
-
-        return SUCCESS;
-    }
-
-    /**
-     * 批量删除
-     */
-    public String deleteBatch() {
-
-        logger.info("批量删除:" + ids);
-
-        String[] Ids = ids.split(",");
-
-        courseChooseService.deleteBatch(Ids);
-
-        r = R.ok();
-
-        return SUCCESS;
-    }
-
-    /**
-     * 修改
-     */
-    public String update() {
-
-        logger.info("更新数据:" + tbCourseChooseEntity);
-
-        courseChooseService.update(tbCourseChooseEntity);
-
-        r = R.ok();
-
-        return SUCCESS;
-    }
-
-    /**
-     * 查询
-     */
-    public String findById() {
-
-        logger.info("查询:"+ tbCourseChooseEntity);
-
-        TbCourseChooseEntity byId = courseChooseService.findById(tbCourseChooseEntity);
-
-        r = R.ok().put("data", byId);
-
-        return SUCCESS;
-    }
-
-    /**
-     * 查询
-     */
-    public String findByPage() {
-
-        PageBean byPage = courseChooseService.findByPage(key, new PageBean<TbCourseChooseEntity>().setCurrPage(page).setPageSize(limit));
-
-        r = R.ok().put("data", byPage.getRows()).put("count", byPage.getTotal());
-
-        logger.info("查询" + r);
-
-        return SUCCESS;
-
+    public CourseChooseModel getModel() {
+        return courseChooseModel;
     }
 
     /////////////////////////////////////////
 
-    public TbCourseChooseEntity getTbCourseChooseEntity() {
-        return tbCourseChooseEntity;
+    public CourseChooseModel getCourseChooseModel() {
+        return courseChooseModel;
     }
 
-    public void setTbCourseChooseEntity(TbCourseChooseEntity tbCourseChooseEntity) {
-        this.tbCourseChooseEntity = tbCourseChooseEntity;
+    public void setCourseChooseModel(CourseChooseModel courseChooseModel) {
+        this.courseChooseModel = courseChooseModel;
     }
 
-    public PageBean<TbCourseChooseEntity> getPageBean() {
+    public PageBean<CourseChooseModel> getPageBean() {
         return pageBean;
     }
 
-    public void setPageBean(PageBean<TbCourseChooseEntity> pageBean) {
+    public void setPageBean(PageBean<CourseChooseModel> pageBean) {
         this.pageBean = pageBean;
     }
 

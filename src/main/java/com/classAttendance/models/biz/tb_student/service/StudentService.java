@@ -54,7 +54,7 @@ public interface StudentService {
     /**
      * 列表
      */
-    public List<TbStudentEntity> findAll(String courseId);
+    public List<TbStudentEntity> findAll(String key, String courseId, Integer attendanceType);
 
     /**
      * 批量删除

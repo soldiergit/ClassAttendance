@@ -5,20 +5,20 @@ package com.classAttendance.models.pojo;
  * @author:soldier
  * @Email:583403411@qq.com
  * @create:19-11-20下午8:50
- * @Describe:
+ * @Describe:考勤模型
  **/
 public class CheckWorkModel {
 
-    private Long studentId;
+    private String studentCode;
     private String studentName;
     private Integer attendanceType;
 
-    public Long getStudentId() {
-        return studentId;
+    public String getStudentCode() {
+        return studentCode;
     }
 
-    public void setStudentId(Long studentId) {
-        this.studentId = studentId;
+    public void setStudentCode(String studentCode) {
+        this.studentCode = studentCode;
     }
 
     public String getStudentName() {

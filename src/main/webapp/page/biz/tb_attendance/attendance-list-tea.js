@@ -2,16 +2,18 @@ layui.config({
     base: '/ClassAttendance/layui/layui_exts/'
 }).extend({
     excel: 'excel'
-}).use(['form', 'layer', 'table', 'laytpl','util'], function () {
+}).use(['form', 'layer', 'table', 'laytpl','util','excel'], function () {
     var form = layui.form,
         layer = parent.layer === undefined ? layui.layer : top.layer,
         $ = layui.$,
         laytpl = layui.laytpl,
         util = layui.util,
+        excel = layui.excel,
         table = layui.table;
 
     //信息列表
     var tableLoad = layer.load(1);
+    var dataLen = 0;//判断是否有记录，用于导出时校验
     var teacherCode = window.sessionStorage.getItem("userCode");
     var tableIns = table.render({
         elem: '#infoList',//数据表格id
@@ -26,6 +28,7 @@ layui.config({
             {field: 'studentName', title: '被考勤学生', minWidth: 100, align: 'center'},
             {field: 'courseName', title: '考勤课程', minWidth: 100, align: 'center'},
             {field: 'attendanceType', title: '考勤情况', minWidth: 100, align: 'center', templet:function(d){
+                    dataLen = 1;
                     if (d.attendanceType === 1) return '出勤';
                     if (d.attendanceType === 2) return '请假';
                     if (d.attendanceType === 3) return '迟到';
@@ -53,10 +56,6 @@ layui.config({
     $('.reloadBtn').on('click', function(){
         var type = $(this).data('type');
         active[type] ? active[type].call(this) : '';
-    });
-
-    $(".addBtn").click(function () {
-        addUser();
     });
 
     //批量删除
@@ -123,13 +122,13 @@ layui.config({
                 var body = layui.layer.getChildFrame('body', index);
                 if (edit) {
                     body.find(".Id").val(edit.id);
-                    body.find(".studentName").val(edit.studentName);
-                    body.find("#studentHide").val(edit.studentId);          //隐藏
-                    body.find(".courseName").val(edit.courseName);
                     body.find("#courseHide").val(edit.courseId);            //隐藏
-                    body.find(".teacherCodeHide").val(edit.teacherCode);    //隐藏
-                    body.find(".attendanceType").val(edit.attendanceType);
-                    body.find(".attendanceTime").val(edit.attendanceTime);
+                    body.find(".courseName").val(edit.courseName).prop("disabled", true);
+                    body.find("#studentCodeHide").val(edit.studentCode);    //隐藏
+                    body.find(".studentName").val(edit.studentName).prop("disabled", true);
+                    body.find(".attendanceTime").val(edit.attendanceTime).prop("disabled", true);
+                    body.find("#teacherCodeHide").val(edit.teacherCode);    //隐藏
+                    body.find("#attendanceType").val(edit.attendanceType);
                     form.render();
                 }
             }
@@ -150,9 +149,12 @@ layui.config({
             content: "attendance-detail.html",
             success: function (layero, index) {
                 var body = layui.layer.getChildFrame('body', index);
-                body.find(".studentName").val(data.tbStudentEntity.studentName);
-                body.find(".courseName").val(data.tbCollegeEntity.courseName);
-                body.find("#attendanceType").val(data.attendanceType);
+                body.find(".studentName").val(data.studentName);
+                body.find(".courseName").val(data.courseName);
+                if (data.attendanceType === 1) body.find(".attendanceType").val('出勤');
+                if (data.attendanceType === 2) body.find(".attendanceType").val('请假');
+                if (data.attendanceType === 3) body.find(".attendanceType").val('迟到');
+                if (data.attendanceType === 4) body.find(".attendanceType").val('旷课');
                 body.find(".attendanceTime").val(data.attendanceTime);
                 form.render();
             }
@@ -165,6 +167,9 @@ layui.config({
         })
     }
 
+    /**
+     *  1-管理员导出全部， 2-老师导出全部， 3-学生导出全部， 4-根据id批量导出
+     */
     //批量导出
     $(".exportBtn").click(function(){
         var checkStatus = table.checkStatus('infoListTable'),
@@ -172,10 +177,10 @@ layui.config({
             newsId = [];
         if(data.length > 0) {
             for (var i in data) {
-                newsId.push(data[i].itemId);
+                newsId.push(data[i].id);
             }
             $.ajax({
-                url: '/teacher/biz/competition_findByExport.action',
+                url: '/ClassAttendance/biz/attendance_findByExport.action',
                 data: {ids : newsId.join(','), exportCode: 4},
                 dataType: 'json',
                 success: function (res) {
@@ -184,39 +189,30 @@ layui.config({
                         var dataIndex = 0;
                         // 重点！！！如果后端给的数据顺序和映射关系不对，请执行梳理函数后导出
                         data = excel.filterExportData(data, {
-                            itemId: function (value, line, data) {
+                            id: function (value, line, data) {
                                 dataIndex += 1;
                                 return dataIndex;
                             },
-                            match: function (value, line, data) {
-                                return value.matchName;
-                            },
-                            itemName: function(value, line, data) {
+                            courseName: 'courseName',
+                            studentName: 'studentName',
+                            attendanceTime: 'attendanceTime',
+                            attendanceType: function(value, line, data) {
+                                if (value === 1) value='出勤';
+                                if (value === 2) value='请假';
+                                if (value === 3) value='迟到';
+                                if (value === 4) value='旷课';
                                 return {
                                     v: value,
                                     s: { font: { sz: 14, bold: true, color: { rgb: "FFFFAA00" } }, fill: { bgColor: { indexed: 64 }, fgColor: { rgb: "FFFF00" } } }
                                 };
-                            },
-                            awardee: 'awardee',
-                            prizeTime: function (value, line, data) {
-                                return util.toDateString(value, "yyyy年");
-                            },
-                            prizeLevel: function (value, line, data) {
-                                return value.title;
-                            },
-                            prizeGrade: function (value, line, data) {
-                                return value.title;
-                            },
-                            teacher: function (value, line, data) {
-                                return value.teacherName;
                             }
                         });
                         // 重点2！！！一般都需要加一个表头，表头的键名顺序需要与最终导出的数据一致
-                        data.unshift({itemId: '编号', match: '赛事名称', itemName: '作品名称', awardee: '参赛队员', prizeTime: '获奖时间', prizeLevel: '获奖级别', prizeGrade: '获奖等次', teacher: '指导老师'});
+                        data.unshift({id: '编号', courseName: '课程名词', studentName: '学生姓名', attendanceTime: '考勤时间', attendanceType: '考勤情况'});
 
                         excel.exportExcel({
                             sheet1: data
-                        }, '我指导的学生竞赛.xlsx', 'xlsx');
+                        }, '学生考勤记录.xlsx', 'xlsx');
                     }else {
                         layer.msg("导出失败");
                     }
@@ -228,54 +224,49 @@ layui.config({
     });
     //全部导出
     $(".exportAllBtn").click(function(){
-        $.ajax({
-            url: '/teacher/biz/competition_findByExport.action',
-            data: {teacherId: teacherId, exportCode: 3},
-            dataType: 'json',
-            success: function (res) {
-                if (res.code===0){
-                    var data = res.data;
-                    var dataIndex = 0;
-                    // 重点！！！如果后端给的数据顺序和映射关系不对，请执行梳理函数后导出
-                    data = excel.filterExportData(data, {
-                        itemId: function (value, line, data) {
-                            dataIndex += 1;
-                            return dataIndex;
-                        },
-                        match: function (value, line, data) {
-                            return value.matchName;
-                        },
-                        itemName: function(value, line, data) {
-                            return {
-                                v: value,
-                                s: { font: { sz: 14, bold: true, color: { rgb: "FFFFAA00" } }, fill: { bgColor: { indexed: 64 }, fgColor: { rgb: "FFFF00" } } }
-                            };
-                        },
-                        awardee: 'awardee',
-                        prizeTime: function (value, line, data) {
-                            return util.toDateString(value, "yyyy年");
-                        },
-                        prizeLevel: function (value, line, data) {
-                            return value.title;
-                        },
-                        prizeGrade: function (value, line, data) {
-                            return value.title;
-                        },
-                        teacher: function (value, line, data) {
-                            return value.teacherName;
-                        },
+        if (dataLen === 0) {
+            layer.msg("无考勤记录！");
+            return false;
+        } else {
+            $.ajax({
+                url: '/ClassAttendance/biz/attendance_findByExport.action',
+                data: {teacherCode: teacherCode, exportCode: 2},
+                dataType: 'json',
+                success: function (res) {
+                    if (res.code===0){
+                        var data = res.data;
+                        var dataIndex = 0;
+                        // 重点！！！如果后端给的数据顺序和映射关系不对，请执行梳理函数后导出
+                        data = excel.filterExportData(data, {
+                            id: function (value, line, data) {
+                                dataIndex += 1;
+                                return dataIndex;
+                            },
+                            courseName: 'courseName',
+                            studentName: 'studentName',
+                            attendanceTime: 'attendanceTime',
+                            attendanceType: function(value, line, data) {
+                                if (value === 1) value='出勤';
+                                if (value === 2) value='请假';
+                                if (value === 3) value='迟到';
+                                if (value === 4) value='旷课';
+                                return {
+                                    v: value,
+                                    s: { font: { sz: 14, bold: true, color: { rgb: "FFFFAA00" } }, fill: { bgColor: { indexed: 64 }, fgColor: { rgb: "FFFF00" } } }
+                                };
+                            }
+                        });
+                        // 重点2！！！一般都需要加一个表头，表头的键名顺序需要与最终导出的数据一致
+                        data.unshift({id: '编号', courseName: '课程名词', studentName: '学生姓名', attendanceTime: '考勤时间', attendanceType: '考勤情况'});
 
-                    });
-                    // 重点2！！！一般都需要加一个表头，表头的键名顺序需要与最终导出的数据一致
-                    data.unshift({itemId: '编号', match: '赛事名称', itemName: '作品名称', awardee: '参赛队员', prizeTime: '获奖时间', prizeLevel: '获奖级别', prizeGrade: '获奖等次', teacher: '指导老师'})
-
-                    excel.exportExcel({
-                        sheet1: data
-                    }, '我指导的全部学生竞赛.xlsx', 'xlsx');
-                }else {
-                    layer.msg("导出失败");
+                        excel.exportExcel({
+                            sheet1: data
+                        }, '学生考勤记录.xlsx', 'xlsx');
+                    }else {
+                        layer.msg("导出失败");
+                    }
                 }
-            }
-        })
+            })
+        }
     });
 });

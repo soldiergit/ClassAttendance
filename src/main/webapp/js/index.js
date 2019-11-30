@@ -6,6 +6,11 @@ layui.config({
 })
 layui.use(['bodyTab','form','element','layer','jquery'],function(){
 	var userType = window.sessionStorage.getItem("userType");//获取用户角色
+	if (userType==undefined || userType==null || userType=="") {//没有登录直接退出
+		window.location.href = "/ClassAttendance/";
+		return false;
+	}
+
 	var form = layui.form,
 		element = layui.element;
 		$ = layui.$;
@@ -153,9 +158,6 @@ layui.use(['bodyTab','form','element','layer','jquery'],function(){
 
 	//系统和部门管理员隐藏个人资料
 	$(function () {
-		if (userType==undefined || userType==null || userType=="") {//没有登录直接退出
-			window.location.href = "/ClassAttendance/index.html";
-		}
 		if (userType.indexOf("1") != -1) {
 			$('#teacherInfo').hide();
 		}

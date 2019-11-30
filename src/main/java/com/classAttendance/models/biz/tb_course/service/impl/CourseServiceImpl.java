@@ -36,7 +36,9 @@ public class CourseServiceImpl implements CourseService {
         teacherEntity_result = teacherService.findById(teacherEntity_result);
         tbCourseEntity.setTbTeacherEntity(teacherEntity_result);
 
-        tbCourseEntity.setId(IDUtils.genItemId());
+        Long id = IDUtils.genItemId();
+        tbCourseEntity.setId(id);
+        tbCourseEntity.setQueryCode(String.valueOf(id));
         courseDao.save(tbCourseEntity);
     }
 
@@ -54,6 +56,7 @@ public class CourseServiceImpl implements CourseService {
         teacherEntity_result = teacherService.findById(teacherEntity_result);
         tbCourseEntity.setTbTeacherEntity(teacherEntity_result);
 
+        tbCourseEntity.setQueryCode(String.valueOf(tbCourseEntity.getId()));
         courseDao.update(tbCourseEntity);
     }
 
@@ -65,6 +68,16 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public PageBean findByPage(String key, String teacherCode, PageBean<TbCourseEntity> pageBean) {
         return courseDao.findByPage(key,teacherCode,pageBean);
+    }
+
+    @Override
+    public PageBean findByHaveChosen(String key, String studentCode, PageBean<TbCourseEntity> pageBean) {
+        return courseDao.findByChoose(key, studentCode, true, pageBean);
+    }
+
+    @Override
+    public PageBean findByNoChoice(String key, String studentCode, PageBean<TbCourseEntity> pageBean) {
+        return courseDao.findByChoose(key, studentCode, false, pageBean);
     }
 
     @Override

@@ -8,7 +8,7 @@
         <id name="id" column="id"/>
         <property name="courseId" column="course_id"/>
         <property name="courseName" column="course_name"/>
-        <property name="studentId" column="student_id"/>
+        <property name="studentCode" column="student_code"/>
         <property name="studentName" column="student_name"/>
         <property name="attendanceTime" column="attendance_time"/>
         <property name="attendanceType" column="attendance_type"/>

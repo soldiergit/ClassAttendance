@@ -14,6 +14,7 @@ import java.util.Objects;
 @Table(name = "tb_course", schema = "class_attendance", catalog = "")
 public class TbCourseEntity {
     private long id;
+    private String queryCode;      //无用字段，用于学生查询已、未选课程
     private String courseName;      //课程名称
     private String courseYear;      //学年
     private String courseTerm;      //学期
@@ -32,6 +33,15 @@ public class TbCourseEntity {
     }
     public void setId(long id) {
         this.id = id;
+    }
+
+    @Basic
+    @Column(name = "query_code")
+    public String getQueryCode() {
+        return queryCode;
+    }
+    public void setQueryCode(String queryCode) {
+        this.queryCode = queryCode;
     }
 
     @Basic
@@ -94,6 +104,7 @@ public class TbCourseEntity {
         if (o == null || getClass() != o.getClass()) return false;
         TbCourseEntity that = (TbCourseEntity) o;
         return id == that.id &&
+                Objects.equals(queryCode, that.queryCode) &&
                 Objects.equals(courseName, that.courseName) &&
                 Objects.equals(courseYear, that.courseYear) &&
                 Objects.equals(courseTerm, that.courseTerm) &&
@@ -104,7 +115,7 @@ public class TbCourseEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, courseName, courseYear, courseTerm, courseHour, courseCapacity, courseResidual);
+        return Objects.hash(id, queryCode, courseName, courseYear, courseTerm, courseHour, courseCapacity, courseResidual);
     }
 
     /**

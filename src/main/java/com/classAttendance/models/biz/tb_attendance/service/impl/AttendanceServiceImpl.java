@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @ProjectName:ClassAttendance
@@ -45,12 +46,17 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
-    public PageBean findByPage(String key, String teacherCode, PageBean<TbAttendanceEntity> pageBean) {
-        return attendanceDao.findByPage(key, teacherCode, pageBean);
+    public PageBean findByPage(String key, String teacherCode, String studentCode, PageBean<TbAttendanceEntity> pageBean) {
+        return attendanceDao.findByPage(key, teacherCode, studentCode, pageBean);
     }
 
     @Override
     public void deleteBatch(String[] Ids) {
         attendanceDao.deleteBatch(Ids);
+    }
+
+    @Override
+    public List<TbAttendanceEntity> findByExport(String teacherCode, String studentCode, String[] Ids) {
+        return attendanceDao.findByExport(teacherCode, studentCode, Ids);
     }
 }

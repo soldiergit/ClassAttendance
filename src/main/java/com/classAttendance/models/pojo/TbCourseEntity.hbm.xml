@@ -6,6 +6,7 @@
 
     <class name="com.classAttendance.models.pojo.TbCourseEntity" table="tb_course" schema="class_attendance">
         <id name="id" column="id"/>
+        <property name="queryCode" column="query_code"/>
         <property name="courseName" column="course_name"/>
         <property name="courseYear" column="course_year"/>
         <property name="courseTerm" column="course_term"/>

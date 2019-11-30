@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @ProjectName:ClassAttendance
@@ -46,6 +45,8 @@ public class AttendanceAction extends ActionSupport implements ModelDriven<TbAtt
     private String ids;
     // 被考勤学生
     private String checkWorkStu;
+    // 1-管理员导出全部， 2-老师导出全部， 3-学生导出全部， 4-根据id批量导出
+    private Integer exportCode;
 
     @Override
     public TbAttendanceEntity getModel() {
@@ -83,7 +84,7 @@ public class AttendanceAction extends ActionSupport implements ModelDriven<TbAtt
             entity.setCourseName(tbAttendanceEntity.getCourseName());
             entity.setTeacherCode(tbAttendanceEntity.getTeacherCode());
             entity.setAttendanceTime(tbAttendanceEntity.getAttendanceTime());
-            entity.setStudentId(model.getStudentId());
+            entity.setStudentCode(model.getStudentCode());
             entity.setStudentName(model.getStudentName());
             entity.setAttendanceType(model.getAttendanceType());
             attendanceService.save(entity);
@@ -157,7 +158,7 @@ public class AttendanceAction extends ActionSupport implements ModelDriven<TbAtt
      */
     public String findByPage() {
 
-        PageBean byPage = attendanceService.findByPage(key, null, new PageBean<TbAttendanceEntity>().setCurrPage(page).setPageSize(limit));
+        PageBean byPage = attendanceService.findByPage(key, null, null, new PageBean<TbAttendanceEntity>().setCurrPage(page).setPageSize(limit));
 
         r = R.ok().put("data", byPage.getRows()).put("count", byPage.getTotal());
 
@@ -172,7 +173,7 @@ public class AttendanceAction extends ActionSupport implements ModelDriven<TbAtt
      */
     public String findByTea() {
 
-        PageBean byTea = attendanceService.findByPage(key, tbAttendanceEntity.getTeacherCode(), new PageBean<TbAttendanceEntity>().setCurrPage(page).setPageSize(limit));
+        PageBean byTea = attendanceService.findByPage(key, tbAttendanceEntity.getTeacherCode(), null, new PageBean<TbAttendanceEntity>().setCurrPage(page).setPageSize(limit));
 
         r = R.ok().put("data", byTea.getRows()).put("count", byTea.getTotal());
 
@@ -187,11 +188,35 @@ public class AttendanceAction extends ActionSupport implements ModelDriven<TbAtt
      */
     public String findByStu() {
 
-        PageBean byTea = attendanceService.findByPage(key, tbAttendanceEntity.getTeacherCode(), new PageBean<TbAttendanceEntity>().setCurrPage(page).setPageSize(limit));
+        PageBean byStu = attendanceService.findByPage(key, null, tbAttendanceEntity.getStudentCode(), new PageBean<TbAttendanceEntity>().setCurrPage(page).setPageSize(limit));
 
-        r = R.ok().put("data", byTea.getRows()).put("count", byTea.getTotal());
+        r = R.ok().put("data", byStu.getRows()).put("count", byStu.getTotal());
 
         logger.info("查询" + r);
+
+        return SUCCESS;
+
+    }
+
+    /**
+     * 导出
+     *  1-管理员导出全部， 2-老师导出全部， 3-学生导出全部， 4-根据id批量导出
+     */
+    public String findByExport() {
+        List<TbAttendanceEntity> byExport = new ArrayList<>();
+        if (exportCode.equals(1)) {
+            byExport = attendanceService.findByExport(null, null, null);
+        } else if (exportCode.equals(2)) {
+            byExport = attendanceService.findByExport(tbAttendanceEntity.getTeacherCode(), null, null);
+        } else if (exportCode.equals(3)) {
+            byExport = attendanceService.findByExport(null, tbAttendanceEntity.getStudentCode(), null);
+        } else if (exportCode.equals(4)) {
+            byExport = attendanceService.findByExport(null, null, ids.split(","));
+        }
+
+        r = R.ok().put("data", byExport);
+
+        logger.info("导出" + r);
 
         return SUCCESS;
 
@@ -261,5 +286,13 @@ public class AttendanceAction extends ActionSupport implements ModelDriven<TbAtt
 
     public void setCheckWorkStu(String checkWorkStu) {
         this.checkWorkStu = checkWorkStu;
+    }
+
+    public Integer getExportCode() {
+        return exportCode;
+    }
+
+    public void setExportCode(Integer exportCode) {
+        this.exportCode = exportCode;
     }
 }

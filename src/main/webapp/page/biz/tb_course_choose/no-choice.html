@@ -22,15 +22,6 @@
                 </div>
                 <a class="layui-btn reloadBtn" data-type="reload">搜索</a>
             </div>
-            <div class="layui-inline">
-                <a class="layui-btn layui-btn-danger layui-btn-normal delBtn">批量删除</a>
-            </div>
-            <div class="layui-inline">
-                <a class="layui-btn layui-btn-warm exportBtn"><i class="layui-icon">&#xe681;</i>导出</a>
-            </div>
-            <div class="layui-inline">
-                <a class="layui-btn layui-btn-primary exportAllBtn"><i class="layui-icon">&#xe681;</i>导出全部</a>
-            </div>
         </form>
     </blockquote>
 
@@ -39,12 +30,16 @@
 
     <!--操作-->
     <script type="text/html" id="infoListBar">
-        <a class="layui-btn layuiadmin-btn-list layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+        {{# if(d.courseResidual > 0){ }}
+        <a class="layui-btn layuiadmin-btn-list layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>选课</a>
+        {{# } }}
+        {{# if(d.courseResidual <= 0){ }}
+        <a class="layui-btn layui-btn-disabled" href="javascript:void(0);"><i class="layui-icon layui-icon-close"></i>已满</a>
+        {{# } }}
         <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="detail"><i class="layui-icon layui-icon-share"></i>详情</a>
     </script>
 </form>
 <script src="/ClassAttendance/layui/layui.js"></script>
-<script src="attendance-list-admin.js"></script>
+<script src="no-choice.js"></script>
 </body>
 </html>

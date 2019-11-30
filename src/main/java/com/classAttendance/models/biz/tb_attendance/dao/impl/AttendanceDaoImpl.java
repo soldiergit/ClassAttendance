@@ -63,7 +63,7 @@ public class AttendanceDaoImpl implements AttendanceDao {
     }
 
     @Override
-    public PageBean findByPage(String key, String teacherCode, PageBean<TbAttendanceEntity> pageBean) {
+    public PageBean findByPage(String key, String teacherCode, String studentCode, PageBean<TbAttendanceEntity> pageBean) {
 
         Session session = sessionFactory.openSession();
 
@@ -73,6 +73,8 @@ public class AttendanceDaoImpl implements AttendanceDao {
             //搜索
             criteria.add(
                     Restrictions.or(
+                            Restrictions.or(Restrictions.like("courseName", key, MatchMode.ANYWHERE)),
+                            Restrictions.or(Restrictions.like("studentName", key, MatchMode.ANYWHERE)),
                             Restrictions.or(Restrictions.like("attendanceTime", key, MatchMode.ANYWHERE))
                     )
             );
@@ -80,6 +82,9 @@ public class AttendanceDaoImpl implements AttendanceDao {
 
         if (teacherCode != null && teacherCode.length() != 0) {
             criteria.add(Restrictions.eq("teacherCode", teacherCode));
+        }
+        if (studentCode != null && studentCode.length() != 0) {
+            criteria.add(Restrictions.eq("studentCode", studentCode));
         }
 
         // 获取记录数
@@ -100,11 +105,38 @@ public class AttendanceDaoImpl implements AttendanceDao {
         List<TbAttendanceEntity> list = new ArrayList<>();
 
         for (String id : Ids) {
-            TbAttendanceEntity studentEntity = new TbAttendanceEntity();
-            studentEntity.setId(Long.parseLong(id));
-            list.add(studentEntity);
+            TbAttendanceEntity tbAttendanceEntity = new TbAttendanceEntity();
+            tbAttendanceEntity.setId(Long.parseLong(id));
+            list.add(tbAttendanceEntity);
         }
 
         hibernateTemplate.deleteAll(list);
+    }
+
+    @Override
+    public List<TbAttendanceEntity> findByExport(String teacherCode, String studentCode, String[] Ids) {
+
+        Session session = sessionFactory.openSession();
+
+        Criteria criteria = session.createCriteria(TbAttendanceEntity.class);
+
+        if (teacherCode != null && teacherCode.length() != 0) {
+            criteria.add(Restrictions.eq("teacherCode", teacherCode));
+        }
+
+        if (studentCode != null && studentCode.length() != 0) {
+            criteria.add(Restrictions.eq("studentCode", studentCode));
+        }
+
+        //是否根据id导出
+        if (Ids!=null && Ids.length!=0) {
+            //转Object数组
+            Object[] ids = new Object[Ids.length];
+            for(int i=0;i<Ids.length;i++){
+                ids[i] = Long.valueOf(Ids[i]);
+            }
+            criteria.add(Restrictions.in("id", ids));
+        }
+        return criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
     }
 }

@@ -132,11 +132,22 @@ public class StudentDaoImpl implements StudentDao {
     }
 
     @Override
-    public List<TbStudentEntity> findAll(String courseId) {
+    public List<TbStudentEntity> findAll(String key, String courseId) {
 
         Session session = sessionFactory.openSession();
 
         Criteria criteria = session.createCriteria(TbStudentEntity.class);
+
+        if (key != null && key.length() != 0) {
+            //搜索
+            criteria.add(
+                    Restrictions.or(
+                            Restrictions.or(Restrictions.like("studentName", key, MatchMode.ANYWHERE)),
+                            Restrictions.or(Restrictions.like("studentPhone", key, MatchMode.ANYWHERE)),
+                            Restrictions.or(Restrictions.like("studentEmail", key, MatchMode.ANYWHERE))
+                    )
+            );
+        }
 
         if (courseId != null && courseId.length() != 0) {
             criteria.add(Restrictions.like("courseSet", courseId, MatchMode.ANYWHERE));

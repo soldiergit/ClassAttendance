@@ -48,7 +48,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             //执行重载
             table.reload('infoListTable', {
                 // 条件
-                where: {key: dataReload.val(), courseId: $('#courseId').val()}
+                where: {key: dataReload.val(), courseId: $('#courseId').val(), attendanceType: $('#attendanceType').val(), queryCode: 1}
             }, 'data');
         }
     };
@@ -68,22 +68,22 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             obj.update({
                 checkWorkType: '出勤'
             });
-            addStu(data.id, data.studentName, 1);
+            addStu(data.studentCode, data.studentName, 1);
         } else if (layEvent === 'leave') {  //请假
             obj.update({
                 checkWorkType: '请假'
             });
-            addStu(data.id, data.studentName, 2);
+            addStu(data.studentCode, data.studentName, 2);
         } else if (layEvent === 'late') {   //迟到
             obj.update({
                 checkWorkType: '迟到'
             });
-            addStu(data.id, data.studentName, 3);
+            addStu(data.studentCode, data.studentName, 3);
         } else if (layEvent === 'truancy') {//旷课
             obj.update({
                 checkWorkType: '旷课'
             });
-            addStu(data.id, data.studentName, 4);
+            addStu(data.studentCode, data.studentName, 4);
         }
     });
 
@@ -91,17 +91,17 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
      * addStu:      添加考勤学生
      * deleteStu:   删除已存在的
      */
-    function addStu(studentId, studentName, attendanceType) {
+    function addStu(studentCode, studentName, attendanceType) {
         var check = {};
-        deleteStu(studentId);           //先删除
-        check.studentId = studentId;
+        deleteStu(studentCode);           //先删除
+        check.studentCode = studentCode;
         check.studentName = studentName;
         check.attendanceType = attendanceType;
         checkWorkStu.push(check);       //再添加
     }
-    function deleteStu(studentId) {
+    function deleteStu(studentCode) {
         for(var i=0;i<checkWorkStu.length;i++){
-            if (checkWorkStu[i].studentId == studentId){
+            if (checkWorkStu[i].studentCode == studentCode){
                 checkWorkStu.splice(i,1)
             }
         }
