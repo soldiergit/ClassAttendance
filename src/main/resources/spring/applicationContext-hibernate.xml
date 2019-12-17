@@ -45,6 +45,14 @@
 
         <!-- 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙 -->
         <property name="filters" value="stat,wall,log4j" />
+
+        <!--2019-12-10 20：08 压力测试多线程添加200个学院出错-->
+        <!-- 超过时间限制是否回收 -->
+        <!--<property name="removeAbandoned" value="true" />-->
+        <!--&lt;!&ndash; 超时时间；单位为秒。180秒=3分钟 &ndash;&gt;-->
+        <!--<property name="removeAbandonedTimeout" value="180" />-->
+        <!--&lt;!&ndash; 关闭abanded连接时输出错误日志 &ndash;&gt;-->
+        <!--<property name="logAbandoned" value="true" />-->
     </bean>
 
     <!-- session工厂 -->
